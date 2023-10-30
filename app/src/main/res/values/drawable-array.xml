@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <array name="image_array">
+        <item>@drawable/cat</item>
+        <item>@drawable/dog</item>
+        <item>@drawable/lion</item>
+    </array>
+</resources>

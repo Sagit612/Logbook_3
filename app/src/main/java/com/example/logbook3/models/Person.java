@@ -1,5 +1,7 @@
 package com.example.logbook3.models;
 
+import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,4 +14,7 @@ public class Person implements Serializable {
     public String name;
     public String dob;
     public String email;
+
+    @ColumnInfo(defaultValue = "")
+    public String image;
 }

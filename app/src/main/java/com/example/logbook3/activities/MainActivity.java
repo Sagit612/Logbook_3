@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     private AppDatabase appDatabase;
     private RecyclerView recyclerView;
     private ContactAdapter adapter;
+    MaterialButton addPersonButton;
     TextView detailsTxt;
     List<Person> persons;
 
@@ -32,29 +33,16 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "example")
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "examples")
                 .allowMainThreadQueries()
                 .build();
-
-//        detailsTxt = findViewById(R.id.detailsText);
-//        List<Person> persons = appDatabase.personDao().getAllPerson();
-//        StringBuilder detailsBuilder = new StringBuilder();
-//        for (Person person: persons) {
-//            detailsBuilder.append(person.person_id).append(" ")
-//                    .append(person.name).append(" ")
-//                    .append(person.dob).append(" ")
-//                    .append(person.email).append("\n");
-//        }
-//        // Display persons
-//        detailsTxt.setText(detailsBuilder.toString());
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Person> persons = appDatabase.personDao().getAllPerson();
-        adapter = new ContactAdapter(persons, this);
+        persons = appDatabase.personDao().getAllPerson();
+        adapter = new ContactAdapter(persons, this::onDeleteClick);
         recyclerView.setAdapter(adapter);
 
-        MaterialButton addPersonButton = (MaterialButton) findViewById(R.id.addPersonButton);
+        addPersonButton = findViewById(R.id.addPersonButton);
         addPersonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,10 +52,6 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
         });
     }
 
-    private void navigateToPersonalDetail () {
-
-    }
-
     private void navigateToNew () {
         Intent intent = new Intent(MainActivity.this, NewActivity.class);
         startActivity(intent);
@@ -75,25 +59,11 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
 
     @Override
     public void onDeleteClick(Person person) {
-//        new AlertDialog.Builder(MainActivity.this)
-//                .setTitle("Delete Contact")
-//                .setMessage("Are you sure you want to delete this contact?")
-//                .setPositiveButton("Delete", (dialog, which) -> {
-//                    // Remove from the database
-//                    appDatabase.personDao().deletePerson(person);
-//
-//                    // Update the list
-//                    persons.remove(person);
-//                    adapter.notifyDataSetChanged();
-//                })
-//                .setNegativeButton("Cancel", null)
-//                .show();
         long personId = person.person_id;
         appDatabase.personDao().deletePerson(person);
         Toast.makeText(this, "Person has been deleted with id: " + personId,
                 Toast.LENGTH_LONG
         ).show();
-
         finish();
         overridePendingTransition(0, 0);
         startActivity(getIntent());

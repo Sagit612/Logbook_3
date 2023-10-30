@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Person person = persons.get(position);
         holder.personName.setText(person.name);
+        holder.imageView.setImageResource(Integer.parseInt(person.image));
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), DetailActivity.class);
             intent.putExtra("person_data", person);
@@ -68,13 +70,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
         TextView personName;
         MaterialButton deleteButton;
+        ImageView imageView;
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
             personName = itemView.findViewById(R.id.personName);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            imageView = itemView.findViewById(R.id.avatar);
         }
-
     }
 }
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.logbook3.R;
@@ -18,13 +19,14 @@ public class DetailActivity extends AppCompatActivity {
     private AppDatabase appDatabase;
 
     TextView nameTxt, dobTxt, emailTxt;
+    ImageView imageView;
     MaterialButton editButton, goBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "example")
+        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "examples")
                 .allowMainThreadQueries() // For simplicity, don't use this in production
                 .build();
         Intent intent = getIntent();
@@ -32,9 +34,11 @@ public class DetailActivity extends AppCompatActivity {
         nameTxt = findViewById(R.id.nameText);
         dobTxt = findViewById(R.id.dobText);
         emailTxt =findViewById(R.id.emailText);
+        imageView = findViewById(R.id.avatar);
         nameTxt.setText(person.name);
         dobTxt.setText(person.dob);
         emailTxt.setText(person.email);
+        imageView.setImageResource(Integer.parseInt(person.image));
         goBackButton = findViewById(R.id.goBackButton);
         editButton = findViewById(R.id.editButton);
         goBackButton.setOnClickListener(new View.OnClickListener() {
